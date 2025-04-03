@@ -1,4 +1,3 @@
-const { data } = require('./cypress/support/data.js');
 const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
@@ -6,7 +5,7 @@ module.exports = defineConfig({
   viewportHeight: 1080,
   watchForFileChanges: false,
   e2e: {
-    baseUrl: data.testData[0].url,
+    baseUrl: 'https://ud-fe-1242.k8stage.ulovdomov.cz/',
     setupNodeEvents(on, config) {
       // implement node event listeners here
     },
