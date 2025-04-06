@@ -1,23 +1,39 @@
 import {data} from '../support/data.js';
 import ListingsPage from '../models/listingsPage.js';
 
-describe('Our tests for ulovDomov', () => {
-    Object.values(data.testData).forEach((value) => {
-        describe('First tests', () => {
-            beforeEach(() => {
-                cy.visit('https://ud-fe-1242.k8stage.ulovdomov.cz/pronajem/nemovitosti/praha?lokace=Praha');
-            });
-            it('TEST', () => {
-                cy.step('Create first test');
-                ListingsPage.searchScroller().should('be.visible');
-                ListingsPage.mapOfLeases().should('be.visible');
-                ListingsPage.buttonFilter(value.text.listingsButtonFilter).should('be.visible');
-                ListingsPage.buttonWatchdog(value.text.listingsButtonWatchdog).should('be.visible');
-                ListingsPage.scrollerHeadingSection().should('be.visible').contains('Pronájem nemovitosti Praha');
-                ListingsPage.countOfOffers().should('be.visible').contains('1328');
-                ListingsPage.selectFilterBy(value.text.listingsFilterOptionTwo).should('be.visible').select(value.text.listingsFilterOptionThree);
 
+describe('Component testing for list of active leases page', () => {
+    Object.values(data.testData).forEach((value) => {
+        describe('Testing for location Prague', () => {
+            beforeEach(() => {
+                cy.visit('https://www.ulovdomov.cz/pronajem/nemovitosti/praha?lokace=Praha');
             });
+            it('Basic Elements check', () => {
+                ListingsPage.basicElementsCheck(value.text.listingsOrderOptionTwo,
+                    value.text.listingsButtonSearchInMap, value.text.listingsButtonLoadMore)
+            });
+            it('Click the create Watchdog button', () => {
+                ListingsPage.clickCreateWatchdog();
+            });
+            it('Change the order of leases', () => {
+                ListingsPage.changeLeasesOrder(value.text.listingsOrderOptionOne, value.text.listingsOrderOptionThree, value.text.listingsOrderOptionThreeUrl);
+            });
+            it('Open the change filters window', () => {
+                ListingsPage.clickChangeFilterOption();
+            });
+            it('Load more leases', () => {
+                ListingsPage.loadMoreLeases(value.text.listingsButtonLoadMore);
+            });
+            it('Contact first lease', () => {
+                ListingsPage.contactFirstLease();
+            });
+            it('Open first lease detail page', () => {
+                ListingsPage.showFirstLeaseDetail(value.text.listingsButtonShowLeasesDetail);
+            });
+            // it('Save first lease to favourites', () => {
+            //     ListingsPage.saveFirstLeaseAsFavourite();
+            //     // TODO - Log in needed to run the test
+            // });
         });
     });
 });

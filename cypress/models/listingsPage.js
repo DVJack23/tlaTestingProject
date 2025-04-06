@@ -1,12 +1,266 @@
+const {createStep, catchReq, checkReq, checkUrl} = require("../support/utilities");
+
 class ListingsPage {
     searchScroller = () => cy.get('#search-scroller');
-    mapOfLeases = () => cy.get('canvas[aria-label="Map"]')
+    mapOfLeases = () => cy.get('[data-test="mapOfLeases"]')
+    mapCanvas = () => cy.get('canvas[aria-label="Map"]');
     scrollerTopSection = () => cy.get('[data-test="searchTopSection"]');
     scrollerHeadingSection = () => cy.get('h1.chakra-heading');
-    buttonFilter = (text) => this.scrollerTopSection().contains('button', text);
-    buttonWatchdog = (text) => this.scrollerTopSection().contains('button', text);
+    buttonFilter = () => cy.get('[data-test="editSearchButton"]');
+    buttonWatchdog = () => this.scrollerTopSection().get('[data-test="dogSetupButton"]').first();
     countOfOffers = () => cy.get('[data-test="countOfOffers"]');
-    selectFilterBy = (text) => cy.contains('select', text);
+    selectOrderBy = (text) => cy.contains('select', text);
+    firstPreviewOfLeases = () => cy.get('[data-test="previewOfferLeases"]').first();
+    secondPreviewOfLeases = () => cy.get('[data-test="previewOfferLeases"]').eq(1);
+    headingLeasesPreview = () => cy.get('[data-test="headingOfLeasesPreview"]');
+    anchorLeasesDetail = () => this.headingLeasesPreview().parent();
+    spanLeasesPrice = () => this.anchorLeasesDetail().get('span');
+    buttonsPreviewOfLease = () =>  cy.get('[data-test="actionButtonsOnPreview"]');
+    buttonShowLeasesDetail = (text) => cy.contains('a', text);
+    buttonContact = () => cy.get('[data-test="contactButton"]');
+    buttonSaveOffer = () => cy.get('[data-test="saveOfferFromPreview"]');
+    buttonCreateWatchdog = () => cy.get('[data-test="watchDogPromoButtonVariable"]')
+    buttonSearchInMap = (text) => this.mapOfLeases().contains('button', text);
+    buttonLoadMore = (text) => this.searchScroller().contains('button', text);
+    buttonMapZoomIn = () => cy.get('button[aria-label="Zoom in"]');
+    buttonMapZoomOut = () => cy.get('button[aria-label="Zoom out"]');
+    buttonMapReset = () => cy.get('button[aria-label="Reset bearing to north"]');
+    saveFavouriteAlertModal = () => cy.get('[data-test="alertModal"]');
+
+    basicElementsCheck = (selectOrderByText, buttonSearchInMapAreaText, buttonLoadMoreText) => {
+        createStep('Check that scroller window is visible');
+        this.searchScroller()
+            .should('be.visible');
+
+        createStep('Check that filter button is visible');
+        this.buttonFilter()
+            .should('be.visible');
+
+        createStep('Check that create watchdog button is visible');
+        this.buttonWatchdog()
+            .should('be.visible');
+
+        createStep('Check that scroller heading section is visible');
+        this.scrollerHeadingSection()
+            .should('be.visible');
+
+        createStep('Check that count of offers is visible');
+        this.countOfOffers()
+            .should('be.visible');
+
+        createStep('Check that filter select is visible');
+        this.selectOrderBy(selectOrderByText)
+            .should('be.visible');
+
+        createStep('Check that first preview of Leases is visible');
+        this.firstPreviewOfLeases()
+            .should('be.visible');
+
+        createStep('Check that preview of leases contains a heading');
+        this.firstPreviewOfLeases().within(() => this.headingLeasesPreview()
+            .should('be.visible'));
+
+        createStep('Check that preview of leases contains href to leases detail');
+        this.firstPreviewOfLeases().within(() => this.anchorLeasesDetail()
+            .should('be.visible').should('have.attr', 'href'));
+
+        createStep('Check that preview of leases contains price');
+        this.spanLeasesPrice()
+            .should('be.visible');
+
+        createStep('Chect that preview of leases contains area with buttons');
+        this.firstPreviewOfLeases().within(() => this.buttonsPreviewOfLease()
+            .should('be.visible'));
+
+        createStep('Check that preview of leases contains button show leases detail');
+        this.firstPreviewOfLeases().within(() => this.buttonShowLeasesDetail()
+            .should('be.visible'));
+
+        createStep('Check that preview of leases contains the contact button');
+        this.firstPreviewOfLeases().within(() => this.buttonContact()
+            .should('be.visible'));
+
+        createStep('Check that preview of leases contains the save offer button');
+        this.buttonSaveOffer()
+            .should('be.visible');
+
+        createStep('Check that first preview of leases contains the create Watchdog button');
+        this.firstPreviewOfLeases().within(() => this.buttonCreateWatchdog()
+            .should('be.visible'));
+
+        createStep('Check that second preview of Leases is visible');
+        this.secondPreviewOfLeases()
+            .should('be.visible');
+
+        createStep('Check that load more leases button is visible');
+        this.buttonLoadMore(buttonLoadMoreText)
+            .scrollIntoView()
+            .should('be.visible');
+
+        createStep('Check that map of leases od visible');
+        this.mapOfLeases()
+            .should('be.visible');
+
+        createStep('Check that map canvas is visible');
+        this.mapCanvas()
+            .should('be.visible');
+
+        createStep('Check that map contains the search in this area button');
+        this.buttonSearchInMap(buttonSearchInMapAreaText)
+            .should('be.visible');
+
+        createStep('Check that map contains the zoom in button');
+        this.buttonMapZoomIn()
+            .should('be.visible');
+
+        createStep('Check that map contains the zoom out button');
+        this.buttonMapZoomOut()
+            .should('be.visible');
+
+        createStep('Check that map contains the reset map button');
+        this.buttonMapReset()
+            .should('be.visible');
+    }
+
+
+    clickCreateWatchdog = () => {
+        createStep('Check that create Watchdog button is visible');
+        this.buttonWatchdog()
+            .should('be.visible');
+
+        createStep('Prepare intercepts for network requests');
+        catchReq('POST', '**/offer/count')
+            .as('filterCount');
+
+        createStep('Click the create Watchdog button');
+        this.buttonWatchdog()
+            .click();
+
+        createStep('Check that network requests were successful');
+        checkReq('filterCount', 200);
+        // TODO - Assert for filter window
+    }
+
+
+    clickChangeFilterOption = () => {
+        createStep('Check that filter option button is visible');
+        this.buttonFilter()
+            .should('be.visible');
+
+        createStep('Prepare intercepts for network requests');
+        catchReq('POST', '**/offer/count')
+            .as('filterCount');
+
+        createStep('Click the filter options button');
+        this.buttonFilter()
+            .click();
+
+        createStep('Check that network requests were successful');
+        checkReq('filterCount', 200);
+        // TODO - Assert for filter window
+    }
+
+
+    changeLeasesOrder = (currentValue, newValue, newValueUrl) => {
+        createStep('Check that order of leases select button is visible');
+        this.selectOrderBy(currentValue)
+            .should('be.visible');
+
+        createStep('Prepare intercepts for network requests');
+        catchReq('POST', `**sorting=${newValueUrl}`)
+            .as('orderValue');
+
+        createStep('Select order of leases');
+        this.selectOrderBy(currentValue)
+            .select(newValue);
+
+        createStep('Check that network requests were successful ');
+        checkReq('orderValue', 200);
+    }
+
+
+    loadMoreLeases = (buttonText) => {
+        createStep('Scroll the load more leases button into view');
+        this.buttonLoadMore(buttonText)
+            .scrollIntoView();
+
+        createStep('Check that load more leases button is visible');
+        this.buttonLoadMore(buttonText)
+            .should('be.visible');
+
+        createStep('Prepare intercepts for network requests');
+        catchReq('POST', '**/offer/find?page*')
+            .as('nextPageData');
+
+        createStep('Click the load more lease button');
+        this.buttonLoadMore(buttonText)
+            .click();
+
+        createStep('Check that network requests were successful');
+        checkReq('nextPageData', 200);
+    }
+
+    contactFirstLease = () => {
+        createStep('Check that contact lease button is visible');
+        this.firstPreviewOfLeases()
+            .should('be.visible');
+
+        createStep('Prepare intercepts for network requests');
+        catchReq('GET', '**/offer/contact-info/*')
+            .as('contactInfo');
+
+        createStep('Click the contact button');
+        this.firstPreviewOfLeases().within(() => this.buttonContact()
+            .click());
+
+        createStep('Check that network requests were successful');
+        checkReq('contactInfo', 200);
+        // TODO - Assert for contact window
+    }
+
+
+    showFirstLeaseDetail = (buttonShowLeasesDetailText) => {
+        createStep('Check that show lease button is visible');
+        this.firstPreviewOfLeases().within(() => this.buttonShowLeasesDetail()
+            .should('be.visible'));
+
+        createStep('Get the first lease offer id number');
+
+        let leaseId = this.firstPreviewOfLeases().invoke('attr','id').then((val) => {
+            leaseId = val.split('.')[1];
+        });
+
+        createStep('Click the show lease button');
+        this.firstPreviewOfLeases().within(() => this.buttonShowLeasesDetail(buttonShowLeasesDetailText)
+            .click());
+
+        createStep('Check that leases detail page was opened');
+        cy.then(() => {
+            checkUrl(leaseId);
+        });
+    }
+
+
+    saveFirstLeaseAsFavourite = () => {
+        // TODO - Log in user
+        createStep('Check that save favourite lease button is visible');
+        this.firstPreviewOfLeases().within(() => this.buttonSaveOffer()
+            .should('be.visible'));
+
+        createStep('Prepare intercepts for network requests');
+        catchReq('POST', '**/fe-api/favorite/add')
+            .as('addFavourite');
+
+        createStep('Click the add favourite lease button');
+        this.firstPreviewOfLeases().within(() => this.buttonSaveOffer().click());
+
+        createStep('Check that alert pop up is visible');
+        this.saveFavouriteAlertModal().should('be.visible');
+
+        createStep('Check that network requests were successful');
+        checkReq('addFavourite', 200);
+    }
+
 }
 
 module.exports = new ListingsPage();
