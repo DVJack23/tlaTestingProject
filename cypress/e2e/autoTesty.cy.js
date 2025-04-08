@@ -34,6 +34,11 @@ describe('Component testing for list of active leases page', () => {
             //     ListingsPage.saveFirstLeaseAsFavourite();
             //     // TODO - Log in needed to run the test
             // });
+            it.only('Testing control buttons for map', () => {
+                ListingsPage.mapZoomIn();
+                ListingsPage.mapZoomOut();
+                ListingsPage.mapReset();
+            })
         });
     });
 });

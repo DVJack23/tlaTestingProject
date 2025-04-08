@@ -261,6 +261,77 @@ class ListingsPage {
         checkReq('addFavourite', 200);
     }
 
+    mapZoomIn = () => {
+        createStep('Check that map is loaded');
+        this.mapCanvas()
+            .should('be.visible');
+
+        createStep('Check that map zoom in button is visible');
+        this.buttonMapZoomIn()
+            .should('be.visible');
+
+        createStep('Click the map zoom in button');
+        this.buttonMapZoomIn()
+            .click();
+    }
+
+    mapZoomOut = () => {
+        createStep('Check that map is loaded');
+        this.mapCanvas()
+            .should('be.visible');
+
+        createStep('Check that map zoom out button is visible');
+        this.buttonMapZoomOut()
+            .should('be.visible');
+
+        createStep('Click the map zoom out button');
+        this.buttonMapZoomOut()
+            .click();
+    }
+
+    mapReset = () => {
+        createStep('Check that map is loaded');
+        this.mapCanvas().should('be.visible');
+
+        createStep('Check that reset to north button is visible');
+        this.buttonMapReset().should('be.visible');
+
+        createStep('Simulate right click drag to rotate map');
+        this.mapCanvas().trigger('mousedown', {
+            button: 2,
+            buttons: 2,
+            clientX: 1000,
+            clientY: 400,
+            force: true
+        });
+        const steps = 10;
+        for (let i = 1; i <= steps; i++) {
+            const x = 1000 - i * 90;
+            const y = 400 + i * 40;
+            this.mapCanvas().trigger('mousemove', {
+                buttons: 2,
+                clientX: x,
+                clientY: y,
+                force: true
+            });
+            cy.wait(20);
+        }
+        this.mapCanvas().trigger('mouseup', {
+            button: 2,
+            buttons: 0,
+            clientX: 100,
+            clientY: 800,
+            force: true
+        });
+
+        createStep('Click the reset map to north button');
+        this.buttonMapReset().click();
+    }
+
+    mapSearchArea = () => {
+
+    }
+
 }
 
 module.exports = new ListingsPage();
