@@ -21,6 +21,7 @@ describe('Our tests for ulovDomov', () => {
                 ListingsPage.scrollerHeadingSection().should('be.visible').contains('Pronájem nemovitosti Praha');
                 ListingsPage.countOfOffers().should('be.visible').contains('1328');
                 ListingsPage.selectFilterBy(value.text.listingsFilterOptionTwo).should('be.visible').select(value.text.listingsFilterOptionThree);
+                cy.get('')
 
             });
         });
