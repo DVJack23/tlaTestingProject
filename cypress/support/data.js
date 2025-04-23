@@ -15,7 +15,7 @@ export const data = {
                 listingsOrderOptionThreeUrl: 'cheapest',
                 listingsButtonSearchInMap: 'Hledat v této oblasti',
                 listingsButtonShowLeasesDetail: 'Zobrazit inzerát',
-                listingsButtonLoadMore: 'Načíst další'
+                listingsButtonLoadMore: 'Načíst další',
             }
         }
     ]

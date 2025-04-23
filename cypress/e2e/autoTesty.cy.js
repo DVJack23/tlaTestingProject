@@ -6,7 +6,7 @@ describe('Component testing for list of active leases page', () => {
     Object.values(data.testData).forEach((value) => {
         describe('Testing for location Prague', () => {
             beforeEach(() => {
-                cy.visit('https://www.ulovdomov.cz/pronajem/nemovitosti/praha?lokace=Praha');
+                cy.visit('https://www.ulovdomov.cz/pronajem/domu/praha?lokace=Praha');
             });
             it('Basic Elements check', () => {
                 ListingsPage.basicElementsCheck(value.text.listingsOrderOptionTwo,
@@ -34,11 +34,11 @@ describe('Component testing for list of active leases page', () => {
             //     ListingsPage.saveFirstLeaseAsFavourite();
             //     // TODO - Log in needed to run the test
             // });
-            it.only('Testing control buttons for map', () => {
+            it('Testing control buttons for map', () => {
                 ListingsPage.mapZoomIn();
                 ListingsPage.mapZoomOut();
                 ListingsPage.mapReset();
-            })
+            });
         });
     });
 });

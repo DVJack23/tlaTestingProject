@@ -328,8 +328,12 @@ class ListingsPage {
         this.buttonMapReset().click();
     }
 
-    mapSearchArea = () => {
+    mapSearchThisArea = () => {
+        createStep('')
+    }
 
+    selectHouseType = (typeText) => {
+        cy.contains('p', typeText).click();
     }
 
 }
