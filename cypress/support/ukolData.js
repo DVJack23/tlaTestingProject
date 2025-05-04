@@ -1,0 +1,1 @@
+export const cities = ['Praha', 'Brno', 'Liberec', 'Ostrava', 'Olomouc']
