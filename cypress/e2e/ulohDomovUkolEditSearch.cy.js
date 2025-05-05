@@ -42,4 +42,5 @@ describe('Uprava vyhledávaní', () => {
         Offers.createEditSearchcohousing('Velmi dobrý','Cihlová','A','Centrum obce','Obytná','Zobrazit 2 spolubydlení');
 
     });
+
 });

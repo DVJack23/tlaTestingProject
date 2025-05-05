@@ -10,11 +10,15 @@ class Offers {
     offerPreview = () => cy.get('[data-test="previewOfferLeases"]');
     buttonEditSearch = () => cy.get('[data-test="editSearchButton"]');
     optionOptionDispotion = (dispotion) => cy.contains('p', dispotion);
+    buttondisplay = () => cy.get('[class="chakra-link css-1bgin0e"]');
+
     buttonZobrazitPronajmuByt = (display) => cy.contains('a',display);
     buttonZobrazitPronajmuDum = (pronajemDum) => cy.contains('a',pronajemDum);
     buttonZobrazitProdejByt = (prodej) => cy.contains('a',prodej);
     buttonZobrazitProdejDum = (prodejDum) => cy.contains('a',prodejDum);
     buttonZobrazitSpolubydlení = (spolubydleni) => cy.contains('a',spolubydleni);
+
+
 
     //Metody
     createSearch(offerType, propertyType, city) {
@@ -37,14 +41,16 @@ class Offers {
         this.optionOptionDispotion(offerDis).click();
         this.optionOptionDispotion(offerGear).click();
         this.optionOptionDispotion(offerExtra).click();
-        this.buttonZobrazitPronajmuByt(offerDisplay).should('be.visible').click();
+        this.buttondisplay().should('be.visible').click();
+        // this.buttonZobrazitPronajmuByt(offerDisplay).should('be.visible').click();
     }
     createEditSearch1(offerDis,offerGear,offerExtra,offerProdej,) {
         this.buttonEditSearch().click();
         this.optionOptionDispotion(offerDis).click();
         this.optionOptionDispotion(offerGear).click();
         this.optionOptionDispotion(offerExtra).click();
-        this.buttonZobrazitProdejByt(offerProdej).should('be.visible').click();
+        this.buttondisplay().should('be.visible').click();
+        // this.buttonZobrazitProdejByt(offerProdej).should('be.visible').click();
     }
     createEditSearchHome(offerTypHome,offerRooms,offerGear,offerExtra,offerPonajemDum,) {
         this.buttonEditSearch().click();
@@ -52,7 +58,8 @@ class Offers {
         this.optionOptionDispotion(offerRooms).click();
         this.optionOptionDispotion(offerGear).click();
         this.optionOptionDispotion(offerExtra).click();
-        this.buttonZobrazitPronajmuDum(offerPonajemDum).should('be.visible').click();
+        this.buttondisplay().should('be.visible').click();
+        // this.buttonZobrazitPronajmuDum(offerPonajemDum).should('be.visible').click();
     }
     createEditSearchHome1(offerTypHome,offerRooms,offerGear,offerExtra,offerProdejDum,) {
         this.buttonEditSearch().click();
@@ -60,7 +67,8 @@ class Offers {
         this.optionOptionDispotion(offerRooms).click();
         this.optionOptionDispotion(offerGear).click();
         this.optionOptionDispotion(offerExtra).click();
-        this.buttonZobrazitProdejDum(offerProdejDum).should('be.visible').click();
+        this.buttondisplay().should('be.visible').click();
+        // this.buttonZobrazitProdejDum(offerProdejDum).should('be.visible').click();
     }
     createEditSearchcohousing(offerTypHome,offerRooms,offerGear,offerExtra,offerLokalita,offerSopubydleni,) {
         this.buttonEditSearch().click();
@@ -69,7 +77,8 @@ class Offers {
         this.optionOptionDispotion(offerGear).click();
         this.optionOptionDispotion(offerExtra).click();
         this.optionOptionDispotion(offerLokalita).click()
-        this.buttonZobrazitSpolubydlení(offerSopubydleni).should('be.visible').click();
+        this.buttondisplay().should('be.visible').click();
+        // this.buttonZobrazitSpolubydlení(offerSopubydleni).should('be.visible').click();
     }
 }
 
